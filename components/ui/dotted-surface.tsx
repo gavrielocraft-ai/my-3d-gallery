@@ -14,7 +14,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		camera: THREE.PerspectiveCamera;
 		renderer: THREE.WebGLRenderer;
 		particles: THREE.Points[];
-		animationId: number;
+		let animationId: number = 0;
 		count: number;
 	} | null>(null);
 
