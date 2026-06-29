@@ -1,44 +1,46 @@
 'use client';
-import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'>;
-
-export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
-  const { theme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
+export function DottedSurface({ className }: { className?: string }) {
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const SEPARATION = 150;
-    const AMOUNTX = 40;
-    const AMOUNTY = 60;
+    const mount = mountRef.current;
+    if (!mount) return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+    const camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.set(0, 355, 1220);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    containerRef.current.appendChild(renderer.domElement);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 1);
+    mount.appendChild(renderer.domElement);
+
+    const SEPARATION = 150, AMOUNTX = 40, AMOUNTY = 60;
     const positions: number[] = [];
-    const colors: number[] = [];
-    const geometry = new THREE.BufferGeometry();
     for (let ix = 0; ix < AMOUNTX; ix++) {
       for (let iy = 0; iy < AMOUNTY; iy++) {
         positions.push(ix * SEPARATION - (AMOUNTX * SEPARATION) / 2, 0, iy * SEPARATION - (AMOUNTY * SEPARATION) / 2);
-       colors.push(200, 200, 200);
+      }
     }
+
+    const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    const material = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.8 });
+
+    const material = new THREE.PointsMaterial({ size: 8, color: 0xffffff });
     const points = new THREE.Points(geometry, material);
     scene.add(points);
+
     let count = 0;
-    let animationId = 0;
+    let animId = 0;
+
     const animate = () => {
-      animationId = requestAnimationFrame(animate);
+      animId = requestAnimationFrame(animate);
       const pos = geometry.attributes.position.array as Float32Array;
       let i = 0;
       for (let ix = 0; ix < AMOUNTX; ix++) {
@@ -51,24 +53,15 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       renderer.render(scene, camera);
       count += 0.1;
     };
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
-    animate();
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationId);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
-    };
-  }, [theme]);
 
-  return <div ref={containerRef} className={cn('pointer-events-none absolute inset-0', className)} {...props} />;
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animId);
+      renderer.dispose();
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
+    };
+  }, []);
+
+  return <div ref={mountRef} style={{ position: 'absolute', inset: 0 }} className={className} />;
 }
