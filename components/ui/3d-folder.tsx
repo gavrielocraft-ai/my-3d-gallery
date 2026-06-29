@@ -299,7 +299,7 @@ export default function App() {
         </div>
       </header>
       <div className="max-w-7xl mx-auto pt-20 px-6 text-center">
-        <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">Design <span className="text-primary italic">Portfolio</span></h1>
+        <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4">Docu<span className="text-primary italic">mentation</span></h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">An interactive catalog of creative work. Hover over folders to reveal project previews.</p>
       </div>
       <section className="max-w-7xl mx-auto px-6 pt-16 pb-32">
