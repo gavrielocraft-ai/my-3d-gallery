@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export function DottedSurface({ className }: { className?: string }) {
+export function DottedSurface({ className, isDark = true }: { className?: string; isDark?: boolean }) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,9 +16,9 @@ export function DottedSurface({ className }: { className?: string }) {
     const camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.set(0, 355, 1220);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
     const SEPARATION = 150, AMOUNTX = 40, AMOUNTY = 60;
@@ -32,7 +32,7 @@ export function DottedSurface({ className }: { className?: string }) {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
 
-    const material = new THREE.PointsMaterial({ size: 8, color: 0xffffff });
+    const material = new THREE.PointsMaterial({ size: 8, color: isDark ? 0xffffff : 0x000000 });
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
@@ -61,7 +61,7 @@ export function DottedSurface({ className }: { className?: string }) {
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [isDark]);
 
   return <div ref={mountRef} style={{ position: 'absolute', inset: 0 }} className={className} />;
 }
