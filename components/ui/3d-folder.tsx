@@ -184,7 +184,11 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({ projects, currentIndex, i
               ))}
             </div>
           </div>
-          <div className={cn("px-8 py-7 bg-card border-t border-white/5 overflow-y-auto max-h-48")} style={{ opacity: animationPhase === "complete" && !isClosing ? 1 : 0, transform: animationPhase === "complete" && !isClosing ? "translateY(0)" : "translateY(40px)", transition: "opacity 500ms ease-out 500ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 500ms" }}>
+          <div
+            className={cn("px-8 py-7 bg-card border-t border-white/5 overflow-y-auto max-h-48")}
+            onClick={(e) => e.stopPropagation()}
+            style={{ opacity: animationPhase === "complete" && !isClosing ? 1 : 0, transform: animationPhase === "complete" && !isClosing ? "translateY(0)" : "translateY(40px)", transition: "opacity 500ms ease-out 500ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 500ms" }}
+          >
             <div className="flex items-start justify-between gap-6">
               <div className="flex-1 min-w-0">
                 <h3 className="text-2xl font-bold text-foreground tracking-tight truncate">{currentProject?.title}</h3>
