@@ -184,11 +184,11 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({ projects, currentIndex, i
               ))}
             </div>
           </div>
-          <div className={cn("px-8 py-7 bg-card border-t border-white/5")} style={{ opacity: animationPhase === "complete" && !isClosing ? 1 : 0, transform: animationPhase === "complete" && !isClosing ? "translateY(0)" : "translateY(40px)", transition: "opacity 500ms ease-out 500ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 500ms" }}>
-            <div className="flex items-center justify-between gap-6">
+          <div className={cn("px-8 py-7 bg-card border-t border-white/5 overflow-y-auto max-h-48")} style={{ opacity: animationPhase === "complete" && !isClosing ? 1 : 0, transform: animationPhase === "complete" && !isClosing ? "translateY(0)" : "translateY(40px)", transition: "opacity 500ms ease-out 500ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 500ms" }}>
+            <div className="flex items-start justify-between gap-6">
               <div className="flex-1 min-w-0">
                 <h3 className="text-2xl font-bold text-foreground tracking-tight truncate">{currentProject?.title}</h3>
-                <p className="text-sm text-muted-foreground mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p className="text-sm text-muted-foreground mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                 <div className="flex items-center gap-4 mt-3">
                   <div className="flex items-center gap-1.5 px-2.5 py-1 bg-muted rounded-full border border-white/5">
                     {projects.map((_, idx) => (
@@ -198,7 +198,7 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({ projects, currentIndex, i
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">{internalIndex + 1} / {totalProjects}</p>
                 </div>
               </div>
-              <button className={cn("flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest text-primary-foreground bg-primary hover:brightness-110 rounded-xl shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95")}>
+              <button className={cn("flex-shrink-0 flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest text-primary-foreground bg-primary hover:brightness-110 rounded-xl shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95")}>
                 <span>View Project</span>
                 <ExternalLink className="w-4 h-4" />
               </button>
