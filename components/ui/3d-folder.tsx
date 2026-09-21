@@ -316,7 +316,7 @@ export default function App() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setIsDark(true);
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setIsDark(false);
   }, []);
 
   useEffect(() => {
